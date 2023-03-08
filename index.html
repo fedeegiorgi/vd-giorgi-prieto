@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tipos de datos, marcas gráficas y canales de codificación visual</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css" />
+    <!-- <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css" /> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-12">
+          <br />
+          <p class="label">VISUALIZACIÓN DE DATOS | LTD - LED - UTDT</p>
+
+          <h1 id="titulo">Tipos de datos, marcas y canales de codificación visual <small><a href="#traduccion">↓</a></small></h1>
+
+          <p>
+            Una visualización representa datos mediante un conjunto de <b>marcas gráficas</b>, como
+            barras, líneas y símbolos de puntos. Los atributos de una marca, como su posición,
+            forma, tamaño o color, sirven como <em>canales</em> en los que podemos codificar valores de los datos.
+          </p>
+          <img src="imgs/canvas.png" alt="" />
+          <p>
+            Con un conjunto básico de tipos de <b>datos</b>, <b>marcas</b> y <b>canales</b> de codificación, podemos crear una gran variedad de visualizaciones. En este apunte, exploramos
+            cada uno de estos elementos y mostramos cómo usarlos para crear gráficos estadísticos.
+          </p>
+
+          <h4>Datos de desarrollo mundial</h4>
+          <p>
+            Visualizaremos datos globales de salud y población registrados
+            entre los años 1955 y 2005, recopilados por la Fundación Gapminder y
+            compartidos en la <a href="https://www.youtube.com/watch?v=hVimVzgtD6w">charla TED de Hans Rosling</a>.
+            <br /><br />
+            En esta página, dada una de las visualizaciones del apunte están embebidas a través de una etiqueta de HTML llamada <code>iframe</code>, y se encuentran en un directorio independiente del <a href="https://github.com/visualizacion-de-datos-utdt/vd_apuntes_marcas_canales">repositorio</a>. Hay más de 30 y la intención es que sirvan como bases para la creación de nuevas visualizaciones.
+          </p>
+          <p>Por ejemplo, la primera visualización <a href="https://github.com/visualizacion-de-datos-utdt/vd_apuntes_marcas_canales/tree/main/chart_01_x">chart_01_x</a> tiene la siguiente estructura de archivos (que se repite en los otros ejemplos):</p>
+          <img src="./imgs/estructura_ejemplos.png" alt="" width="250">
+          <br><br>
+          <p>En primer lugar está <b>index.html</b>. Es el archivo HTML que leerá nuestro navegador y hará las llamadas a los códigos .js necesarios para nuestras visualizaciones. Estos archivos son:
+            <ul>
+              <li><b>Plot.js</b> es una librería gratuita y de código abierto de JavaScript que, junto con d3 (la segunda librería llamada desde el HTML), nos permitirá producir, a partir de datos, visualizaciones dinámicas e interactivas en navegadores web. Ambas hacen uso de las tecnologías web HTML, CSS y SVG</li>
+              <li><b>script.js</b> donde se aloja nuestro código</li>
+            </ul>
+
+             <p>Y por último se encuentra el archivo de datos <b>data2000.csv</b>, en este caso en formato CSV (que significa Comma-Separated Values).</p>
+
+          
+
+<p>
+            En <b>script.js</b> programamos nuestra visualización. Lo primero que realizamos es la carga de datos <b>data.csv</b> con d3. El método <code>d3.csv</code> de d3.js realiza la carga del archivo y transforma el texto plano del csv en una lista de objetos JavaScript. El segundo parámetro (la función
+            <code>d3.autoType</code>) detecta automáticamente los tipos de datos comunes, como números, fechas y valores booleanos, y convierte los valores al tipo de JavaScript correspondiente.
+          </p>
+          <pre><code class="language-js">
+  d3.csv("./data2000.csv", d3.autoType).then((data) => {
+    console.log(data);
+  });
+          </code></pre>
+          <p>
+            El tamaño de este conjunto de datos es de 63 filas por 6 columnas. Veamos el contenido de las
+            primeras 10 filas:
+          </p>
+                    <!-- Tabla 2000 -->
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>year</th>
+                          <th>country</th>
+                          <th>cluster</th>
+                          <th>pop</th>
+                          <th>life_expect</th>
+                          <th>fertility</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Afghanistan"</td>
+                          <td>A</td>
+                          <td>23898198</td>
+                          <td>42.129</td>
+                          <td>7.4792</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Argentina"</td>
+                          <td>D</td>
+                          <td>37497728</td>
+                          <td>74.34</td>
+                          <td>2.35</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Aruba"</td>
+                          <td>D</td>
+                          <td>69539</td>
+                          <td>73.451</td>
+                          <td>2.124</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Australia"</td>
+                          <td>E</td>
+                          <td>19164620</td>
+                          <td>80.37</td>
+                          <td>1.756</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Austria"</td>
+                          <td>B</td>
+                          <td>8113413</td>
+                          <td>78.98</td>
+                          <td>1.382</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Bahamas"</td>
+                          <td>D</td>
+                          <td>290075</td>
+                          <td>71.068</td>
+                          <td>2.1111</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Bangladesh"</td>
+                          <td>A</td>
+                          <td>130406594</td>
+                          <td>62.013</td>
+                          <td>3.224</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Barbados"</td>
+                          <td>D</td>
+                          <td>273483</td>
+                          <td>75.97</td>
+                          <td>1.5</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Belgium"</td>
+                          <td>B</td>
+                          <td>10263618</td>
+                          <td>78.32</td>
+                          <td>1.638</td>
+                        </tr>
+                        <tr>
+                          <td>2000</td>
+                          <td>"Bolivia"</td>
+                          <td>D</td>
+                          <td>8152620</td>
+                          <td>63.883</td>
+                          <td>3.9585</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br /><br />
+          <p>
+            Para cada país (<code>country</code>) y año (<code>year</code>) tenemos la tasa de fertilidad en términos de número de hijos por mujer
+            (<code>fertility</code>), la esperanza de vida en años ( <code>life_expect</code> ) y
+            población total (<code>pop</code>). 
+            <br /><br />
+            También vemos el campo <code>cluster</code> con una letra que representa la pertenencia del país a una región determinada.
+            <br /><br />
+            En otros ejemplos, vamos a utilizar el conjunto de datos completo, que tiene 693 registros y que se llama <a href="./data/data.csv">data.csv</a>. 
+          </p>
+
+
+          <!-- Data types -->
+          <hr>
+          <h2>Tipos de datos</h2>
+          <p>
+            En una visualización son fundamentales los datos de entrada. Los valores de estos datos pueden representar diferentes clases de información. ¿Qué tipo de comparaciones admiten esos datos? ¿Y qué codificaciones visuales se ajustan mejor a ellos?
+            <br /><br />
+
+            <b>Plot.js</b>, la librería JavaScript de visualización para la web que vamos a utilizar en esta materia, infiere los tipos de
+            datos. Esto significa que es importante que los datos de entrada sean del tipo correcto. Por ejemplo, si tenemos un campo cuantitativo el dato debe ser de tipo numérico y no de tipo
+            <i>string</i> para que no se produzcan errores en la representación visual.
+            <br /><br />
+
+            Comenzaremos observando los tipos de datos básicos en visualizaciones. Estos tipos de
+            datos determinan la comparaciones que podemos hacer y, por lo tanto, guían nuestras decisiones de diseño.
+          </p>
+          <h5>Categóricos</h5>
+          <p>
+            Los datos <b>categóricos</b>, también llamados <b>nominales</b> solo pueden adoptar un grupo limitado de valores. Con este tipo de datos podemos comparar la igualdad de valores: ¿el valor A es igual o diferente al
+            valor B? (A == B). Podemos decir si "A es igual a B" o "A no es igual a B". En los datos del ejemplo, el campo <b>country</b> es nominal. Al visualizar datos nominales,
+            debemos percibir fácilmente si los valores son iguales o diferentes: la posición, el
+            tono del color (azul, rojo, verde, etc.) y la elección de distintas formas geométricas
+            son opciones posibles. Por el contrario, usar el tamaño para codificar datos
+            nominales podría inducirnos a un error, sugiriendo diferencias de magnitud entre valores
+            que no existen.
+          </p>
+
+          <h5>Ordinales</h5>
+          <p>
+            Los <b>ordinales</b> son datos categóricos que tienen un orden
+            específico. En este tipo de datos podemos comparar el orden de los valores: ¿el valor A
+            viene antes o después del valor B? (A < B) y podemos preguntar si "A es menor que B" o "A
+            es mayor que B". En nuestro ejemplo, tratamos al campo <b>year</b> como
+            ordinal. Al visualizar datos ordinales, debemos percibir una sensación de orden. La posición, el tamaño o el valor del color (luminosidad) son apropiados. Mientras que el tono
+            del color (posición en el espectro) es menos adecuado porque no está ordenado perceptivamente.
+          </p>
+
+          <h5>Cuantitativos</h5>
+          <p>
+            Con datos <b>cuantitativos</b> podemos medir diferencias numéricas
+            entre valores. Existen diferentes subtipos: </p>
+            <ul>
+              <li><b>Intervalo</b>: podemos medir la distancia
+                entre puntos: ¿cuál es la distancia del valor A al valor B? (A - B) o decir "A está a 12 unidades de distancia de B".</li>
+              <li><b>Relación</b>: el cero es significativo por lo que podemos medir proporciones: ¿qué relación hay
+                entre el valor A y el valor B? (A / B) o decir "A es el 10% de B" o "B es 7 veces más grande que A".</li>
+            </ul>
+             <p>
+            En el conjunto de datos del ejemplo, el campo <b>year</b> es un <b>intervalo</b> (el valor del año "cero" es subjetivo), mientras que
+            <b>fertility</b> y <b>life_expect</b> son campos de tipo <b>relación</b> (el cero es significativo para calcular proporciones). <br /><br />
+            Los valores cuantitativos se pueden visualizar mediante posición, tamaño o color (valor
+            u opacidad), entre otros canales. Un eje con una línea de base cero es esencial para las
+            comparaciones proporcionales de valores de relación, pero se puede omitir para las
+            comparaciones de intervalos.
+          </p>
+
+          <h5>Temporales</h5>
+          <p>
+            Los valores <b>temporales</b> indican puntos o intervalos de tiempo.
+            Este tipo es un caso especial de valores cuantitativos (marcas de fecha y hora) con una
+            larga historia de convenciones (<a
+              href="https://es.wikipedia.org/wiki/Calendario_gregoriano"
+              >el calendario gregoriano</a
+            >). <br /><br />
+            Los valores temporales pueden incluir textos como "2019-01-04" o "04 de enero de 2019",
+            así como fechas y horas estandarizadas como el formato de fecha y hora ISO:
+            "2019-01-04T17:50:35.643Z" . No hay valores temporales en nuestro conjunto de datos ya
+            que el campo <code>year</code> está codificado como un número entero. 
+          </p>
+
+          <h5>Resumen</h5>
+          <p>
+            Estos tipos de datos no se excluyen mutuamente, sino que forman una jerarquía: los datos
+            ordinales admiten comparaciones nominales (igualdad), mientras que los datos
+            cuantitativos admiten comparaciones ordinales (orden de rango). Además, estos tipos de
+            datos no proporcionan una categorización fija. Por ejemplo, el hecho de que un campo de
+            datos se represente con un número no significa que debamos tratarlo como un tipo
+            cuantitativo. Podríamos interpretar un conjunto de edades (10 años, 20 años, etc.) como
+            nominales (menores o mayores), ordinales (agrupados por años) o cuantitativos (calcular
+            la edad promedio).
+          </p>
+          
+          <p> Ahora examinemos cómo visualizar estos tipos de datos usando los canales
+            de codificación visual.</p>
+
+          <hr />
+          <h2>Canales</h2>
+          <p>
+            Para visualizar datos utilizamos <b>marcas</b>: formas geométricas
+            tales como barras, áreas, puntos y líneas. Y vinculamos columnas de datos a las propiedades visuales de las marcas. A estas propiedades visuales los llamaremos <b>canales</b>. 
+            <br><br>
+            En <b>Plot.js</b>, dentro del <i>array</i> <b>marks</b> definimos la
+            marca a utilizar (podemos usar más de una, como veremos después). <br /><br />
+            Luego de definir la marca, vinculamos columnas de datos a las propiedades visuales de
+            las marcas (el tipo de marca determina que canales se pueden utilizar). Por ejemplo, podemos codificar la columna de
+            fertilidad (<b>fertility</b>) con la posición X de puntos (marca <b>dot</b>). Los
+            canales visuales más frecuentes son:
+          </p>
+
+          <ul>
+            <li><code>x</code>: Posición horizontal (eje x) de la marca.</li>
+            <li><code>y</code>: Posición vertical (eje y) de la marca.</li>
+            <li>
+              <code>fill</code>: Tono del color de relleno de la superficie de la marca. Se usa para codificar datos categóricos principalmente.
+            </li>
+            <li>
+              <code>fillOpacity</code>: La opacidad, que va de 0 (totalmente transparente) a 1
+              (totalmente opaco), se vincula generalmente a codificar datos cuantitativos.
+            </li>
+            <li><code>curve</code>: Tipo de curva para marcas de línea. Se dividen en dos grupos: rectas y curvas.</li>
+            <li>
+              <code>textAnchor</code>, <code>fontFamily</code>, <code>fontSize</code>,
+              <code>fontStyle</code>, <code>fontVariant</code>, <code>fontWeight</code>: son
+              atributos (canales) vinculados a la marca textual (<code>text</code>).
+            </li>
+          </ul>
+          <!-- chart_01_x -->
+          <h4>x</h4>
+          <p>
+            El canal de codificación <b class="label">x</b> establece la posición horizontal de una
+            marca: en este caso la coordenada x de la marca punto (<b>dot</b>). Además, las
+            opciones predeterminadas del eje las realiza automáticamente
+            <b>Plot.js</b>. En el gráfico a continuación, vinculamos la columna <b>fertility</b> (datos
+            cuantitativos) que da como resultado una escala lineal continua en el eje x:
+          </p>
+          <iframe id="chart_01_x" src="chart_01_x/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_01_x */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, { x: "fertility" }),
+    ],
+  });
+          </code></pre>
+
+          <!-- chart_02_y -->
+          <h4>y</h4>
+          <p>
+            El canal de codificación <b>y</b> establece la posición vertical de una
+            marca (coordenada y). Aquí hemos agregado el campo<b>cluster</b>, que es de tipo ordinal.
+            Implícitamente Plot interpreta sus valores como categóricos (ya que son <i>strings</i>), y produce como 
+            resultado un eje vertical con valores discretos.
+          </p>
+          <iframe src="chart_02_y/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_02_y */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, { x: "fertility", y: "cluster" }),
+    ]
+  });       
+
+</code></pre>
+
+          <!-- chart_03_x_y -->
+          <p>
+            ¿Qué sucede con el gráfico si al eje vertical vinculamos un campo cuantitativo?
+            <br /><br />
+            Si en lugar de <b>cluster</b> añadimos el campo <b>life_expect</b>, el
+            resultado es un gráfico de dispersión, porque
+            <b>life_expect</b> es un dato numérico y Plot infiere que es cuantitativo:
+          </p>
+          <iframe src="chart_03_x_y/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_03_x_y */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, { x: "fertility", y: "life_expect" }),
+    ],
+  });       
+
+</code></pre>
+          <!-- chart_03_x_y -->
+          <p>
+            Si queremos que las escalas incluyan el cero una de las maneras es indicarlo en los ejes
+            con
+            <code>zero: true</code>. En muchas situaciones es útil extender los valores de las escalas como líneas horizontales en el eje vertical y verticales en el eje
+            horizontal para remarcar la posición de los elementos en el gráfico. En Plot podemos declarar la propiedad <code>grid: true</code> y
+            <code>line: true</code> para reforzar las líneas de origen del gráfico. En el caso que
+            el dominio (tanto en x como en y) no termine en un número entero o más legible podemos
+            indicarlo con <code>nice: true</code>.
+          </p>
+
+          <iframe src="chart_03_x_y_grid/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_03_x_y_grid */
+  Plot.plot({
+    marks: [Plot.dot(data, { x: "fertility", y: "life_expect" })],
+    x: { grid: true, line: true, zero: true, nice: true, },
+    y: { grid: true, line: true, zero: true, nice: true, }
+  });       
+
+</code></pre>
+
+          <h3>Tamaño</h3>
+          <p>
+            Podemos establecer el tamaño de una marca como canal para codificar valores, cuyo significado puede variar según el tipo de marca. Para las marcas de puntos
+            (<b>dot</b>), el canal radio (<b>r</b>) hace que el área de los puntos sea
+            proporcional al valor cuantitativo asociado. 
+            Enriquecemos nuestro gráfico de dispersión codificando la población (<b>pop</b>)
+            con el canal radio. 
+          </p>
+          
+
+          <!-- chart_05_size_a -->
+          <iframe src="chart_05_size_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_05_size_a */
+  Plot.plot({
+    marks: [Plot.dot(data, { x: "fertility", y: "life_expect", r: "pop" })],
+    nice: true,
+    line: true,
+    grid: true,
+    zero: true,
+  })       
+          </code></pre>
+
+          <!-- chart_05_size_b -->
+          <p>
+            En algunos casos, es posible que no estemos conformes con el rango del tamaño
+            predeterminado. Para proporcionar otro intervalo, hay que asignar un <i>array</i> a la
+            propiedad <b>range</b> del atributo radio (<b>r</b>) que indique el tamaño más
+            pequeño y el más grande. De esta forma, actualizamos en nuestro gráfico el canal para que los radios varíen de 0
+            píxeles (para datos de población iguales a cero) a 50 píxeles (para el valor máximo de población).
+          </p>
+          <iframe src="chart_05_size_b/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_05_size_b */
+  Plot.plot({
+    marks: [Plot.dot(data, { x: "fertility", y: "life_expect", r: "pop" })],
+    r: { range: [0, 50] }
+    grid: true,
+    line: true,
+    nice: true,
+  })          
+</code></pre>
+
+          <h3>Color</h3>
+          <p>
+            El color también puede ser usado como canal de codificación. La elección del componente del color a utilizar (valor, tono, saturación y opacidad) dependerá en gran medida del tipo de dato a codificar: los datos categóricos
+            tendrán por defecto un esquema de color cualitativo de varios tonos, mientras que los
+            cuantitativos utilizarán gradientes de color ordenados de manera perceptiva. <br /><br />
+            Aquí, codificamos el campo <b>cluster</b> con el color del borde del círculo
+            <code>stroke: "cluster"</code> lo que da como resultado un tono distinto para cada valor
+            (A, B, C,...). Además indicamos en la propiedad <b>color</b> la generación de una leyenda que
+            muestra la correspondencia del color y el dato categórico <code>legend: true</code>.
+          </p>
+          <!-- chart_06_color_a -->
+          <iframe src="chart_06_color_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_color_a */
+  Plot.plot({
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        stroke: "cluster",
+        r: "pop",
+      }),
+    ],
+  });
+  
+</code></pre>
+
+          <!-- chart_06_color_b -->
+          <p>
+            También podemos usar el color en la superficie del círculo:
+            <code>fill: "cluster"</code>:
+          </p>
+          <iframe src="chart_06_color_b/index.html"></iframe>
+
+          <pre><code class="language-js">
+  /* chart_06_color_b */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+</code></pre>
+
+          <!-- chart_06_color_c -->
+          <p>
+            De forma predeterminada, <b>Plot.js</b> aplica los colores sin transparencia (opacidad = 1). Si asignamos a la opacidad un valor menor a 1 haremos visibles los círculos que
+            están superpuestos.
+          </p>
+          <iframe src="chart_06_color_c/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_color_c */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        opacity: 0.5
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+
+</code></pre>
+
+          <!-- chart_06_symbol -->
+          <h3>Forma</h3>
+          <p>
+            El canal de codificación de formas (<b>symbol</b>) establece una forma geométrica
+            distinta para cada dato categórico que usamos, en este caso, para codificar cada <b>cluster</b> con una forma distinta
+            <code>symbol: "cluster"</code>. A diferencia de los otros canales que vimos hasta ahora, el
+            canal de forma solo puede ser utilizado con la marca <b>dot</b>. El canal de codificación de
+            forma se usa frecuentemente con datos categóricos ya que, al tener una cantidad limitada de formas geométricas, no es efectivo visualmente representar datos cuantitativos.
+            <br /><br />
+            Codificamos el campo <b>cluster</b> usando tanto la forma como el color. El uso de múltiples
+            canales para el mismo campo de datos subyacente se conoce como <b>codificación redundante</b>.
+            En este caso, el gráfico resultante combina información de color y forma en una sola leyenda de
+            símbolo:
+          </p>
+          <iframe src="chart_06_symbol/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_symbol */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        symbol: "cluster",
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    symbol: {
+      legend: "true",
+    },
+  });
+
+</code></pre>
+
+          <h3><em>Tooltips</em></h3>
+          <p>
+            Todavía no sabemos a qué países
+            corresponden los puntos visualizados. Una opción es usar el canal
+            <code>title</code> para visualizar el nombre del país. Con <code>title</code> Plot
+            genera un <em>tooltip</em>, un rectángulo que crea el navegador cuando se produce un
+            <em>hover</em> del mouse sobre la marca (en este caso, el círculo). <br /><br />
+            Al igual que los otros canales vinculamos el canal con el campo:
+            <code>title: "country"</code>
+          </p>
+          <!-- chart_06_color_tooltip_a -->
+          <iframe src="chart_06_tooltip_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_tooltip_a */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        opacity: 0.5,
+        title: "country"
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+
+</code></pre>
+
+          <!-- chart_06_color_tooltip_b -->
+          <p>
+            Mediante una función anónima de JavaScript podemos acceder a los distintos campos y
+            concatenarlos para el texto del <em>tooltip</em>. Por ejemplo, el nombre del país con la
+            expectativa de vida y la fertilidad:
+            <code
+              >title: (d) => `${d.country}\nExpectativa: ${d.life_expect} años\nFertilidad:
+              ${d.fertility}`</code
+            >
+          </p>
+          <iframe src="chart_06_tooltip_b/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_tooltip_b */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        opacity: 0.5,
+        title: (d) =>
+          `${d.country}
+          Expectativa: ${d.life_expect} años
+          Fertilidad: ${d.fertility}`,
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+
+</code></pre>
+
+          <!-- chart_06_text_b -->
+          <p>
+            Otra opción es agregar una marca de texto con el nombre del país. Para esto debemos sumar
+            una marca <b>text</b> en el array <b>marks</b>:
+          </p>
+          <iframe src="chart_06_text_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_text_a */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        opacity: 0.4,
+      Plot.text(data, {
+        x: "fertility",
+        y: "life_expect",
+        text: "country",
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+
+</code></pre>
+          <!-- chart_06_text_b -->
+          <p>
+            Para evitar la superposición de los nombres, podemos indicar solamente los países de mayor
+            población pasando una función anónima filtrando aquellos países con población mayor a
+            cien millones de habitantes:
+            <br><br>
+            <code class="language-js">text: (d) => (d.pop > 100000000 ? d.country : "")</code>
+          </p>
+          <iframe src="chart_06_text_b/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_06_text_b */
+  Plot.plot({
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        r: "pop",
+        fill: "cluster",
+        opacity: 0.4,
+      Plot.text(data, {
+        x: "fertility",
+        y: "life_expect",
+        text: (d) => (d.pop > 100000000 ? d.country : ""),
+      }),
+    ],
+    grid: true,
+    line: true,
+    nice: true,
+    color: {
+      legend: true,
+    },
+  });
+
+</code></pre>
+          <h3 id="faces">Fases</h3>
+          <p>
+            Una variante del canal de posición (x e y) es la codificación por fases, es decir, una grilla de pequeños gráficos de posición compuestos por agrupaciones de los datos principales  a partir de una misma propiedad, que permite la comparación entre ellos. La técnica la definió Edward Tufte como <em
+              ><a href="https://en.wikipedia.org/wiki/Small_multiple" target="_blank"
+                >small multiples</a
+              ></em
+            >. <br /><br />
+
+            Siguiendo nuestro proyecto, sería interesante utilizar fases para comparar los distintos grupos <b>(cluster)</b> de países. En Plot a este canal se lo denomina <code>facet</code> y es un canal de la marca <code>dot</code>. Para crearlo debemos indicar el conjunto de datos
+  (<code>data</code>) y el campo categórico que definirá los subgráficos así como el eje de alineación (x o y). En este ejemplo mapeamos <code>cluster</code> sobre el eje x
+  generando una fila de gráficos (uno por cada cluster de países):
+          </p>
+
+          <!-- chart_07_facets_a -->
+          <iframe src="chart_07_facets_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_07_facets_a */
+  Plot.plot({
+    grid: true,
+    nice: true,
+    zero: true,
+    color: {
+      legend: true,
+    },
+    facet: {
+      data: data,
+      x: "cluster",
+    },
+    marks: [
+      Plot.dot(data, {
+        x: "fertility",
+        y: "life_expect",
+        fill: "cluster",
+        fillOpacity: 0.6,
+        r: "pop",
+        title: "country",
+      }),
+    ],
+  });
+
+</code></pre>
+
+          <!-- chart_07_facets_b -->
+          <p>
+            El gráfico anterior queda desproporcionado con las medidas predeterminadas, lo que
+            dificulta la comparación de los "subgráficos" entre sí. Podemos asignar nuevos valores a
+            las propiedades de ancho y alto para crear un conjunto más pequeño de múltiplos. Y
+            ajustar el rango del radio del círculo. Además, dado que los encabezados de los
+            subgráficos etiquetan los valores de cluster, podemos eliminar la leyenda de color.
+          </p>
+          <iframe src="chart_07_facets_b/index.html"></iframe>
+          <pre><code class="language-js">
+/* chart_07_facets_b */
+Plot.plot({
+  marks: [
+    Plot.dot(data, {
+      x: "fertility",
+      y: "life_expect",
+      fill: "cluster",
+      fillOpacity: 0.6,
+      r: "pop",
+      title: "country",
+    }),
+    Plot.frame(),
+  ],
+  grid: true,
+  nice: true,
+  zero: true,
+  width: 800,
+  height: 200,
+  r: { range: [0, 18] },
+  facet: {
+    data: data,
+    x: "cluster",
+  },
+});
+
+</code></pre>
+          
+          <hr />
+          <h2 id="marcas">Marcas</h2>
+          <p>
+            Además de codificar canales, podemos elegir distintos tipos de marcas gráficas de
+            acuerdo a lo que necesitemos comunicar con los datos. Una visualización puede combinar múltiples marcas. En <b>Plot.js</b> las marcas son métodos que se expresan: <code>Plot.nombre_de_la_marca()</code>.
+
+            En la exploración de canales de codificación utilizamos exclusivamente puntos (<code>Plot.dot()</code>) para visualizar datos. Sin embargo, la marca de puntos es solo una de las muchas formas geométricas que se pueden usar para representar
+            datos visualmente. <b>Plot.js</b> dispone actualmente de 19 clases distintas de marcas. En este apunte veremos algunas de ellas:
+          </p>
+          <ul>
+            <li><code>dot()</code>: Círculos u otras formas geométricas.</li>
+            <li>
+              <code>areaX()</code>
+              /
+              <code>areaY</code>: Áreas rellenas definidas por una línea superior y una línea base.
+            </li>
+
+            <li><code>barX()</code> / <code>barY</code>: Barras rectangulares.</li>
+            <li><code>line()</code> Segmentos de línea conectados.</li>
+            <li><code>cell()</code> Celdas: rectángulos rellenos, útiles para mapas de calor.</li>
+            <li><code>text()</code> Puntos (coordenadas x, y) representados por texto.</li>
+            <li>
+              <code>tick()</code> Líneas horizontales o verticales en donde el eje de la posición es  
+              cuantitativo y el otro eje es categórico.
+            </li>
+
+            <li>
+              Para la lista completa de marcas consultar la documentación de Plot.js
+              <a href="https://observablehq.com/@observablehq/plot#marks"
+                >Todas las marcas de Plot.js</a
+              >. A continuación, veremos paso a paso algunos de los tipos de marcas más utilizados
+              para gráficos estadísticos.
+            </li>
+          </ul>
+
+          <!-- chart_09_dot_mark_symbol-->
+          <!-- <iframe src="chart_09_dot_mark_symbol/index.html"></iframe> -->
+
+          <!-- chart_10_dot_mark -->
+          <h4>Punto</h4>
+          <p>
+            La marca de punto <b>dot</b>
+            representa predeterminadamente los datos como círculos, frecuentemente posicionados en dimensiones
+            cuantitativas x e y, como en un gráfico de dispersión. Por ejemplo, el siguiente
+            diagrama de dispersión muestra la relación aproximadamente inversa entre la expectativa
+            de vida en y↑ y la fertilidad en x→
+          </p>
+          <iframe src="chart_10_dot_mark/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_10_dot_mark */
+  Plot.plot({
+    height: 200,
+    width: 500,
+    line: true,
+    nice: true,
+    zero: true,
+    grid: true,
+    marks: [
+      Plot.dot(data, {
+        x: 'fertility',
+        y: 'life_expect',
+      }),
+    ],
+  })
+            
+            </code></pre>
+          <!-- chart_10_dot_mark_square -->
+          <p>
+            Con la marca punto se pueden elegir, además del círculo, otras formas geométricas
+            utilizando la propiedad
+            <b>symbol</b>. Las disponibles son: cruz (<b>cross</b>), rombo (<b>diamond</b>),
+            cuadrado (<b>square</b>), estrella (<b>star</b>), triángulo
+            (<b>triangle</b>), "Y" (<b>wye</b>)
+          </p>
+          <iframe src="chart_10_dot_mark_square/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_10_dot_mark_square */
+  Plot.plot({
+    width: 600,
+    height: 200,
+    line: true,
+    nice: true,
+    zero: true,
+    grid: true,
+    marks: [
+      Plot.dot(data, {
+        x: 'fertility',
+        y: 'cluster',
+        fillOpacity: 0.6,
+        symbol: 'square',
+      }),
+    ],
+  })
+            
+            </code></pre>
+
+          <!-- chart_11_tick_mark -->
+          <h4>Tilde</h4>
+          <p>
+            Las tildes (<b>ticks</b>) son líneas horizontales o verticales. Una <b>tickY</b> ↔︎ tiene un valor y,
+            mientras que un <b>tickX</b> ↕︎ tiene un valor x. Los ticks se suelen usar para mostrar
+            distribuciones unidimensionales, como en el gráfico de tipo "código de barras" que a continuación muestra la densidad de fertilidad en cada <em>cluster</em> de países.
+          </p>
+          <iframe src="chart_11_tick_mark/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_11_tick_mark */
+  Plot.plot({
+    marks: [
+      Plot.tickX(data, {
+        x: 'fertility',
+        y: 'cluster',
+      }),
+    ],
+    width: 600,
+    height: 200,
+    line: true,
+    nice: true,
+    grid: true,
+  })
+            
+            </code></pre>
+
+          <h4>Barras</h4>
+          <!-- chart_12_bar_mark_a -->
+          <p>
+            El tipo de marca de barras dibuja rectángulos, cuyas longitudes representan un campo cuantitativo. Y en el eje opuesto se despliega un campo categórico u ordinal. 
+            <br /><br />
+            El siguiente gráfico es de barras horizontales (<b>barX</b>) para visualizar las poblaciones de los países. Por lo tanto, el dato cuantitativo es <b>pop</b> en el eje <b>x</b> y en el eje <b>y</b> definimos el dato categórico <b>country</b>. Con la función <b>sort</b> de d3
+            ordenamos el dominio de <b>y</b> de manera descendente según la población para facilitar la comparación entre países:
+            <br>
+            <code class="language-js">d3.sort(data, (a, b) => d3.descending(a.pop, b.pop)).map(d => d.country)</code>
+            <br>
+            Hay dos razones para preferir un gráfico de barras horizontales sobre uno de barras verticales. La primera es que las barras dispuestas una encima de la otra se leen como una lista, acentuando visualmente el orden de los valores. La segunda es que usando el formato horizontal se facilita la puesta tipográfica de los nombres de las categorías (en nuestro caso los países). Como regla, si la escala incluye más de 6 categorías, es preferible utilizar un gráfico de barras horizontales a uno de barras verticales.
+          </p>
+          <iframe src="chart_12_bar_mark_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_12_bar_mark_a */
+  Plot.plot({
+    marks: [
+      Plot.barX(data, {
+        x: 'pop',
+        y: 'country',
+      }),
+    ],
+    y: {
+      domain: d3.sort(data, (a, b) => d3.descending(a.pop, b.pop)).map(d => d.country),
+    },
+    x: {
+      grid: true,
+    },
+    height: 1000,
+    marginLeft: 100,
+  })
+            </code></pre>
+          <!-- chart_12_bar_mark_group -->
+          <p>
+            El código anterior crea un gráfico de barras a partir de una línea de base cero, y el
+            canal <strong>y</strong> solo codifica el valor distinto de cero con la longitud de la
+            barra. Sin embargo, la marca de barra también permite especificar puntos de inicio y
+            final para visualizar rangos. <br /><br />
+            El gráfico siguiente utiliza los canales <b>x1</b> (punto de partida) y <b>x2</b> (punto
+            final) para mostrar el rango de fertilidad dentro de cada grupo regional <b>(cluster)</b>.
+            Utilizamos las funciones de mínimo y máximo para determinar los extremos del
+            rango. Previamente agrupamos por cluster con la función de transformación
+            <code>groupY</code>.
+          </p>
+          <iframe src="chart_12_bar_mark_group/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_12_bar_mark_group */
+  Plot.plot({
+    marks: [
+      Plot.barX(
+        data,
+        Plot.groupY(
+          {
+            x1: 'min',
+            x2: 'max',
+          },
+          { x: 'fertility', y: 'cluster' },
+        ),
+      ),
+    ],
+    x: {
+      label: 'Min of life_expect, Max of life_expect',
+    },
+    height: 200,
+    width: 600,
+    grid: true,
+    nice: true,
+    line: true,
+            </code></pre>
+          <p>
+            Las barras también se pueden apilar cuando necesitemos mostrar una suma de registros individuales. En este caso, mostramos la suma de la población por grupo de países.
+            Para esto cambiemos la codificación <b>x</b> por <b>cluster</b> y codificamos al país
+            usando el canal de color. También desactivamos la leyenda (que sería muy larga con
+            colores para todos los países). En su lugar usamos a la propiedad
+            <code>title</code> para generar <em>tooltips</em> con el nombre
+            del país y la población, que se activan con el <em>hover</em> del usuario.
+          </p>
+
+          <!-- chart_12_bar_mark_stacked -->
+          <iframe src="chart_12_bar_mark_stacked/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_12_bar_mark_stacked */
+  Plot.plot({
+    marks: [
+      Plot.barY(data, {
+        x: 'cluster',
+        y: 'pop',
+        fill: 'country',
+        sort: 'pop',
+        title: d => d.country + '\n' + d.pop,
+      }),
+    ],
+    marginLeft: 70,
+    width: 300,
+  })
+            </code></pre>
+
+          <h4>Línea</h4>
+          <p>
+            La marca de línea (<b>line</b>) conecta puntos con una línea. A través de la
+            pendiente de una línea se puede comunicar, por ejemplo, la tasa de cambio de una
+            variable. Por ejemplo, con esta marca podemos visualizar claramente como creció la expectativa de vida en Argentina a través de los años. Estamos usando el archivo <b>data.csv</b> con los datos completos:
+          </p>
+            <br /><br />
+
+            <!-- chart_13_line_mark_arg -->
+            <iframe src="chart_13_line_mark_arg/index.html"></iframe>
+<pre><code class="language-js">
+  /* chart_13_line_mark_a */
+  Plot.plot({
+    marks: [
+      Plot.line(data, {
+        x: 'year',
+        y: 'fertility',
+        z: 'country',
+        stroke: 'country',
+      }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+  })
+            </code></pre>
+            
+          <p>
+            Hagamos ahora un gráfico de líneas múltiples de todos los países
+            utilizando los datos de desarrollo mundial sin filtrar. Podemos ver variaciones en cada
+            país y tendencias generales de menor número de hijos por familia a lo largo del tiempo.
+          </p>
+
+          <!-- chart_13_line_mark_a -->
+          <iframe src="chart_13_line_mark_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_13_line_mark_a */
+  Plot.plot({
+    marks: [
+      Plot.line(data, {
+        x: 'year',
+        y: 'fertility',
+        z: 'country',
+        stroke: 'country',
+      }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+  })
+            </code></pre>
+          <p>
+            Cambiemos algunos de los parámetros de marca predeterminados para personalizar el
+            gráfico. Podemos configurar el <b>ancho del trazo</b> para determinar el grosor de las líneas y
+            la <b>opacidad</b> para agregar algo de transparencia. De forma predeterminada, la marca de
+            línea utiliza segmentos de línea recta para conectar puntos de datos.
+            <br /><br />
+            Es posible suavizar las líneas ajustando la
+            interpolación que conecta a los puntos de datos. Asignamos a la propiedad <b>curve</b> el valor <b>'natural'</b> para proporcionar líneas suaves que no generarán valores mínimos o máximos falsos como resultado de la interpolación.
+          </p>
+          <!-- chart_13_line_mark_b -->
+          <iframe src="chart_13_line_mark_b/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_13_line_mark_b */
+  Plot.plot({
+    marks: [
+      Plot.line(data, {
+        x: 'year',
+        y: 'fertility',
+        z: 'country',
+        stroke: 'country',
+        strokeWidth: 3,
+        opacity: 0.5,
+        curve: 'natural',
+      }),
+    ],
+  })
+            </code></pre>
+
+          <p>
+            Al graficar muchas líneas, es necesario usar el canal <b>z</b> para agrupar datos
+            ordenados en series. Por ejemplo, los gráficos muestran las tasas de fertilidad en donde
+            cada línea es un país y debemos indicarlo en <b>z</b> (<code>z: country</code>).
+            <br /><br />
+            Una misma línea puede variar su color. Si el valor codificado en
+            <b>stroke</b> es cuantitativo, la línea se segmentará por color. El
+            mismo comportamiento se aplica a otros canales, como <b>strokeWidth</b>. En este caso, las caídas de fertilidad se visualizan con el cambio
+            de colores cálidos a fríos.
+          </p>
+
+          <!-- chart_13_line_mark_a_color -->
+          <iframe src="chart_13_line_mark_highlight/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_13_line_mark_highlight */
+  Plot.plot({
+    marks: [
+      Plot.line(data, {
+        x: 'year',
+        y: 'fertility',
+        z: 'country',
+        stroke: 'fertility',
+      }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+  })
+                  </code></pre>
+          <p>
+            La marca <b>line</b> también se puede utilizar para crear los llamados <em>gráficos de pendientes</em> o <em>coordenadas paralelas</em>. Son gráficos que destacan el cambio de valor
+            entre dos puntos utilizando las pendientes. <br /><br />
+            A continuación, creamos un gráfico de pendiente que compara las poblaciones de cada país
+            en los años mínimo y máximo en nuestro conjunto de datos: 1955 y 2005. Para esto
+            filtramos los datos de esos años:
+            <br><br>
+            <code>data.filter(d => d.year == 1955 || d.year == 2005)</code>
+            <br /><br />
+          </p>
+          <!-- chart_13_line_mark_c -->
+          <iframe src="chart_13_line_mark_c/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_13_line_mark_c */
+  Plot.plot({
+    marks: [
+      Plot.line(
+        data.filter(d => d.year == 1955 || d.year == 2005),
+        {
+          x: 'year',
+          y: 'pop',
+          stroke: 'country',
+          opacity: 0.7,
+        },
+      ),
+    ],
+    x: {
+      tickFormat: 'd',
+      type: 'ordinal',
+    },
+    y: {
+      tickFormat: d3.format(',.0f'),
+      ticks: 6,
+      zero: true,
+    },
+    width: 300,
+    marginLeft: 70,
+    line: true,
+  })
+                  </code></pre>
+          <p>
+            Para este tipo de gráficos en <b>Plot.js</b> también se puede utilizar la marca <b>link</b> donde
+            es necesario transformar los datos previamente para que se adapten al tipo de marca.
+            <a href="https://github.com/visualizacion-de-datos-utdt/vd_apuntes_marcas_canales/blob/main/chart_13_link_mark/script.js"
+              >Ver código del mismo ejemplo utilizando la marca <b>link</b></a
+            >
+          </p>
+          <h4>Área</h4>
+          <p>
+            El tipo de marca de areas (<b>area</b>) combina aspectos de la marca de líneas y de la de
+            barras: visualiza conexiones (pendientes) entre puntos de datos, y también muestra la
+            superficie generada, con una línea de base de valor cero.
+
+            <br /><br />
+            El siguiente gráfico utiliza una marca de área de la tasa de fertilidad de la Argentina
+            a lo largo del tiempo:
+          </p>
+          <!-- chart_14_area_mark_a -->
+          <iframe src="chart_14_area_mark_a/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_14_area_mark_a */
+  Plot.plot({
+    marks: [
+      Plot.areaY(
+        data.filter(d => d.country == 'Argentina'),
+        {
+          x: 'year',
+          y: 'fertility',
+          opacity: 0.3,
+        },
+      ),
+    ],
+    line: true,
+    x: {
+      tickFormat: 'd',
+      ticks: 11,
+    },
+    y: {
+      ticks: 7,
+      grid: true,
+    },
+  })
+                  </code></pre>
+          <p>
+            Al igual que las marcas de línea, las de área admiten el parámetro
+            <code>curve</code> para modificar el tipo de curva.
+          </p>
+          <!-- chart_14_area_mark_b -->
+          <iframe src="chart_14_area_mark_b/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_14_area_mark_b */
+  Plot.plot({
+    marks: [
+      Plot.areaY(
+        data.filter(d => d.country == 'Argentina'),
+        {
+          x: 'year',
+          y: 'fertility',
+          opacity: 0.3,
+          curve: 'natural'
+        },
+      ),
+    ],
+    line: true,
+    x: {
+      tickFormat: 'd',
+      ticks: 11,
+    },
+    y: {
+      ticks: 7,
+      grid: true,
+    },
+  })
+                  </code></pre>
+
+          <!-- chart_14_area_mark_c -->
+          <p>
+            También, como en las marcas de barras, podemos usar el apilamiento.
+            Para este ejemplo filtramos los datos de Argentina, Brasil y Chile:
+            <br />
+            <br />
+            <code
+              >let dataABC = data.filter( d => d.country == 'Argentina' || d.country == 'Chile' ||
+              d.country == 'Brazil', )</code
+            >
+            <br />
+            <br />
+            y luego los graficamos usando una marca de área y un canal de color para
+            apilarlos por país.
+          </p>
+
+          <iframe src="chart_14_area_mark_c/index.html"></iframe>
+          <pre><code class="language-js">
+  /* chart_14_area_mark_c */
+  Plot.plot({
+    marks: [
+      Plot.areaY(dataABC, {
+        x: 'year',
+        y: 'pop',
+        sort: d => -d.pop, // orden descendente
+        fill: 'country',
+      }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+    y: {
+      tickFormat: d3.format(',.0f'),
+      grid: true,
+    },
+    marginLeft: 70,
+    line: true,
+    color: {
+      legend: true,
+    },
+  })
+                  </code></pre>
+          <p>
+            De forma predeterminada, el apilamiento se realiza en relación con una línea de base
+            cero. Sin embargo, hay otras opciones de apilamiento disponibles usando la propiedad <code>offset</code>: <br />
+
+            <ul>
+              <li><code>silhouette</code>: para apilar las áreas en relación a un eje de alineación en el centro del gráfico.</li>
+              <li><code>expand</code>: para normalizar los datos sumados en cada punto de apilamiento al 100% (rango de 0 a 1), lo que permite realizar comparaciones porcentuales.</li>
+            </ul>
+            <br>
+            A continuación, adaptamos el gráfico configurando la propiedad <code>offset</code> con <code>silhouette</code>. ¿Qué sucede si, en cambio, se configura con <code>expand</code>?
+          </p>
+
+          <!-- chart_14_area_mark_d -->
+          <iframe src="chart_14_area_mark_d/index.html"></iframe>
+<pre><code class="language-js">
+  /* chart_14_area_mark_d */
+  Plot.plot({
+    marks: [
+      Plot.areaY(dataABC, {
+        x: 'year',
+        y: 'pop',
+        offset: 'silhouette',
+        sort: d => -d.pop, // orden descendente
+        fill: 'country',
+      }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+    y: {
+      tickFormat: d3.format(',.0f'),
+      grid: true,
+    },
+    marginLeft: 70,
+    line: true,
+    color: {
+      legend: true,
+    },
+  })
+                  </code></pre>
+
+
+          <!-- chart_14_area_mark_e -->
+          <p>La marca de área también admite líneas inferiores basadas en datos. En este ejemplo usamos los canales <b>y1</b> e <b>y2</b> para codificar los mínimos y máximos de fertilidad de cada año. Para eso, necesitamos adaptar nuestros datos:</p>
+
+<pre><code class="language-js">
+  /* chart_14_area_mark_d */
+  let dataABC = data.filter(
+    d => d.country === 'Argentina' 
+         || d.country === 'Brasil' 
+         || d.country === 'Chile')
+
+  let dataMinMax = d3
+    .groups(dataABC, d => d.year)
+    .map(d => {
+      return {
+        year: d[0],
+        min: d3.min(d[1], d => d.fertility),
+        max: d3.max(d[1], d => d.fertility),
+      }
+    })  
+    // Obtenemos esta estructura de datos
+    // [{max: 5.486, min: 3.1265, year: 1955}, {}, {}]
+  </code></pre>
+  <p>De esta manera el mínimo de la fertilidad está codificado en la línea inferior del área y el máximo en la superior. Además agregamos una marca de línea para mostrar la fertilidad promedio.</p>
+          <iframe src="chart_14_area_mark_e/index.html"></iframe>
+<pre><code class="language-js">
+  /* chart_14_area_mark_e */
+  Plot.plot({
+    marks: [
+      Plot.areaY(dataMinMax, {
+        x: 'year',
+        y1: 'min',
+        y2: 'max',
+        fillOpacity: 0.3,
+      }),
+      Plot.lineY(dataMinMax, { x: 'year', y: d => (d.max + d.min) / 2 }),
+    ],
+    x: {
+      tickFormat: 'd',
+    },
+    y: {
+      grid: true,
+      label: 'Min - Máx fertility',
+    },
+    line: true,
+  })
+  </code></pre>
+  <hr>
+  <h3>Extra: interacción</h3>
+          <p>
+            Posteriormente vamos a estudiar <b>técnicas de interacción</b> para la exploración de
+            datos. Acá hacemos un adelanto: vinculamos un <em>slider</em> al campo
+            <code>year</code> para permitirle al usuario filtrar los datos por año. No nos preocupemos
+            si el código del proyecto <code>chart_08_slider</code> es un poco confuso en este punto; más adelante vamos a cubrir la interacción en detalle. Arrastremos el <em>slider</em> hacia
+            adelante y hacia atrás para ver cómo cambian los valores de los datos en el tiempo.
+          </p>
+          <!-- chart_08_slider -->
+          <iframe src="chart_08_slider/index.html"></iframe>
+  <pre><code class="language-js">
+  /* chart_08_slider */
+    </code></pre>
+          
+<hr>
+  <h3>Resumen</h3>
+  <p>
+Ya completamos nuestro recorrido por los tipos de datos, los canales de codificación y las marcas gráficas. Para obtener una referencia completa (incluidas las funciones que hemos omitido aquí) consultar la documentación de <a href="https://observablehq.com/@observablehq/plot?collection=@observablehq/plot">Plot.js</a> .
+</p>
+<p>El estudio sistemático de marcas, codificaciones visuales y tipos de datos de respaldo fue iniciado por <a href="https://en.wikipedia.org/wiki/Jacques_Bertin">Jacques Bertin</a> en su obra de 1967 <em>Sémiologie Graphique (La semiología de los gráficos)</em>.
+</p>
+<hr>
+<div id="traduccion">
+
+  <p><a href="#titulo">↑ </a> <a
+    href="https://observablehq.com/@uwdata/data-types-graphical-marks-and-visual-encoding-channels?collection=@uwdata/visualization-curriculum"
+    >Jeffrey Heer. <em>Data Types, Graphical Marks, and Visual Encoding Channels</em>, UW Interactive Data Lab</a>.
+    Traducción al castellano y adaptación a Plot.js por Carlos Araujo, Juana Copello y Julieta Romero.
+  </p>
+  <br><br>
+</div>
+          
+
+          <!-- chart_14_area_mark_f -->
+          <!-- <iframe src="chart_14_area_mark_f/index.html"></iframe> -->
+          <!-- chart_15_two_marks_a -->
+          <!-- <iframe src="chart_15_marks_a/index.html"></iframe> -->
+          <!-- chart_15_two_marks_b -->
+          <!-- <iframe src="chart_15_marks_b/index.html"></iframe> -->
+        </div>
+      </div>
+    </div>
+    <!-- <script type="text/JavaScript" src="https://pym.nprapps.org/pym.v1.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.min.js"></script>
+    <script>
+      hljs.highlightAll()
+      iFrameResize({})
+      // iFrameResize();
+      // var pymParent = new pym.Parent("chart_01_x", "./chart_01_x/index.html", {});
+    </script>
+  </body>
+</html>
