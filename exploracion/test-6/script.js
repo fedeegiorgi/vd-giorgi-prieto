@@ -1,5 +1,3 @@
-const { sum } = require("d3")
-
 d3.csv('astronautas.csv', d3.autoType).then(data => {
   console.log(data)
   // Guardamos el svg generado en la variable chart
@@ -15,6 +13,3 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
   // Agregamos chart al div#chart de index.html
   d3.select('#chart').append(() => chart)
 })
-
-
-// anio_mision == x_anio && pais = x_pais ? cantidad += 0 : cantidad += 1

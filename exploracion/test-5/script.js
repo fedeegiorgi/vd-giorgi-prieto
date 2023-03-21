@@ -1,15 +1,26 @@
 d3.csv('astronautas.csv', d3.autoType).then(data => {
-  console.log(data)
-  // Guardamos el svg generado en la variable chart
   let chart = Plot.plot({
     marks: [
-      Plot.dot(data, {
-        x: 'status', 
+      Plot.barY(data, {
+        x: 'genero',
         y: 'mision_hs',
-        stroke: 'genero'
-      }),
+        fill: 'genero',
+        order: 'fill'
+      })
     ],
+    width: 600,
+    height: 400,
+    margin: 80,
+    inset: 10,
+    x: {
+      label: 'Genero'
+    },
+    y: {
+      label: 'Duración total de misiones (horas)'
+    },
+    color: {
+        range: ['#FF69b4', 'blue'],
+    }
   })
-  // Agregamos chart al div#chart de index.html
   d3.select('#chart').append(() => chart)
 })
