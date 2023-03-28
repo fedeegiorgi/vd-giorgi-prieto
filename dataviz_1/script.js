@@ -34,6 +34,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
         stroke: 'black',
         title: d => d.gender === 'Femenino' ? d.y1 - d.y0 : '',
         tooltip: d => d.gender === 'Femenino' ? d.y1 - d.y0 : '',
+        
       }),
     ],
     x: {
@@ -46,12 +47,8 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
     width: 800,
     margin: 30,
     color: {
-      range: ['#FF69b4', '#03fc62'],
-      legend: true,
-    },
-    legend: {
-      fill: ['pink', 'blue'],
-      title: 'Genero',
+      range: ['#e59892', '#4773aa'],
+      legend: false,
     },
   });
 

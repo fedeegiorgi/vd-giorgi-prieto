@@ -41,17 +41,14 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       },
       y: {
         label: "Astronautas",
+        domain: [0,30]
       },
       height: 500,
       width: 800,
       margin: 30,
       color: {
-        range: ['#FF69b4', '#03fc62'],
-        legend: true,
-      },
-      legend: {
-        fill: ['pink', 'blue'],
-        title: 'Genero',
+        range: ['#e59892'],
+        legend: false,
       },
     });
   
