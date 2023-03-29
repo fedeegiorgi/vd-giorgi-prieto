@@ -1,54 +1,53 @@
 d3.csv('astronautas.csv', d3.autoType).then(data => {
-  
-  let country_data = d3.group(data, d => d.nacionalidad)
-  let country_ratios = []
-  country_data.forEach((value, key) => {
-    let females = 0
-    let males = 0
-    value.forEach(d => {
-      if (d.genero === 'femenino') {
-        females++
-      } else if (d.genero === 'masculino') {
-        males++
-      }
-    })
-    let ratio = females / males
-    let size = value.length
-    country_ratios.push({country: key, ratio: ratio, size: size})
-  })
-  
-  let max_ratio = d3.max(country_ratios, d => d.ratio)
+  console.log(data);
 
-  let dotColor = d => {
-    if (d.country === 'EE.UU.') {
-      return 'red'
-    } else if (d.country === 'U.S.S.R/Rusia') {
-      return 'blue'
-    } else {
-      return 'black'
-    }
-  }
-  
+  let countBynacionalidad = {};
+  data.forEach(function(d) {
+    var nacionalidad = d.nacionalidad;
+    countBynacionalidad[nacionalidad] = countBynacionalidad[nacionalidad] || 0;
+    countBynacionalidad[nacionalidad]++;
+  });
+
+  let countBynacionalidadAndGender = {};
+  data.forEach(function(d) {
+    var nacionalidad = d.nacionalidad;
+    var gender = d.genero;
+    countBynacionalidadAndGender[nacionalidad] = countBynacionalidadAndGender[nacionalidad] || {masculino: 0, femenino: 0};
+    countBynacionalidadAndGender[nacionalidad][gender]++;
+  });
+
+  let countData = [];
+  Object.entries(countBynacionalidadAndGender).forEach(([nacionalidad, genderCounts]) => {
+    let totalCount = countBynacionalidad[nacionalidad];
+    let femeninoCount = genderCounts.femenino;
+    countData.push({x: nacionalidad, y0: 0, y1: femeninoCount, gender: 'Femenino'});
+    countData.push({x: nacionalidad, y0: femeninoCount, y1: totalCount, gender: 'Masculino'});
+  });
+
   let chart = Plot.plot({
     marks: [
-      Plot.dot(country_ratios, {
-        x: 'country', 
-        y: 'ratio',
-        fill: dotColor,
-        r: 'size'
+      Plot.barY(countData, {
+        x: 'x',
+        y: d => d.y1 - d.y0,
+        y0: 'y0',
+        fill: 'gender',
+        stroke: 'black',
       }),
     ],
     x: {
-      label: 'Pais',
+      label: null,
     },
     y: {
-      label: 'Ratio mujeres/hombres',
-      domain: [-0.005, max_ratio + 0.005],
+      label: "Astronautas",
     },
     height: 500,
     width: 1000,
     margin: 30,
-  })
+    color: {
+      range: ['#e59892', '#4773aa'],
+      legend: false,
+    },
+  });
 
-  d3.select('#chart').append(() => chart)
-})
+  d3.select('#chart').append(() => chart);
+});

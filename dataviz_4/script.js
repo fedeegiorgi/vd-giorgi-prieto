@@ -40,24 +40,21 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       }),
     ],
     y: {
-      label: "Trabajo",
+      label: null,
     },
     x: {
-      label: "Astronautas",
+      label: null,
       ticks: 0,
     },
     height: 500,
     width: 800,
-    margin: 50,
+    margin: 150,
     color: {
-      range: ['#FF69b4', '#03fc62'],
-      legend: true,
-    },
-    legend: {
-      fill: ['pink', 'blue'],
-      title: 'Genero',
+      range: ['#e59892', '#4773aa'],
+      legend: false,
     },
   });
 
   d3.select('#chart').append(() => chart);
 });
+

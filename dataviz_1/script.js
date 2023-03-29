@@ -38,7 +38,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       }),
     ],
     x: {
-      label: "Año",
+      label: null,
     },
     y: {
       label: "Astronautas",
