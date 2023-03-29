@@ -13,14 +13,21 @@ body {
 
 h1 {
     color: #ffffff;
-    margin-left: 170px;
 }
 
 h5 {
-    color: #ffffff;
-    margin-left: 260px;
+  color: #ffffff;
+  align-self: center;
+  font-weight: 300;
 }
 
+p {
+  color: #ffffff;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
 .gender-legend {
     display: flex;
     flex-direction: row;

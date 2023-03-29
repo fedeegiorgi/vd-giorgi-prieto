@@ -38,7 +38,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       label: null,
     },
     y: {
-      label: "Astronautas",
+      label: null,
     },
     height: 500,
     width: 1000,
@@ -49,5 +49,12 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
     },
   });
 
+  chart.addEventListener('click', function(event) {
+    if (event.target.tagName === 'text') {
+      let label = event.target.textContent.trim();
+      let url = `${label}.html`;
+      window.location.href = url;
+    }
+  });
   d3.select('#chart').append(() => chart);
 });
