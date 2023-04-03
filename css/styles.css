@@ -1,3 +1,9 @@
+@import 'uswds-theme-general';
+@import 'uswds-theme-typography';
+@import 'uswds-theme-spacing';
+@import 'uswds-theme-color';
+@import 'uswds-theme-utilities';
+
 *{
     margin: 0;
     padding: 0;
@@ -12,7 +18,7 @@ body{
 .container__card{
     max-width: 1200px;
     margin: auto;
-    margin-top: 100px;   
+    margin-top: 80px;   
     perspective: 1000px;
     display: flex;
     justify-content: center;
@@ -109,4 +115,12 @@ body{
 
 .body__card_back .button:hover{
     box-shadow: 1px 1px 10px 0px #99231b;
+}
+
+.usa-serif.body h1{
+    font-family: Helvetica;
+    font-weight: 700;
+    font-size: 59px;
+    line-height: 1.2em/71px;
+    letter-spacing: 0.21em;
 }
