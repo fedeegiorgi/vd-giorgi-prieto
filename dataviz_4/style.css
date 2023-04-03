@@ -7,16 +7,25 @@ body {
 #chart svg {
     color: #dce4ef;
     background-color: #061f4a;
-    margin-top: -70px;
-    margin-left: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h1 {
     color: #ffffff;
-    margin-left: 170px;
+    text-align: center;
 }
 
 h5 {
-    color: #ffffff;
-    margin-left: 220px;
+  color: #ffffff;
+  font-weight: 300;
+  text-align: center;
+  font-style: italic;
+}
+
+p {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
 }

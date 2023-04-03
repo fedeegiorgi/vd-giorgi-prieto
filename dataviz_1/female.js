@@ -43,7 +43,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
         label: "Astronautas",
         domain: [0,30]
       },
-      height: 500,
+      height: 630,
       width: 800,
       margin: 30,
       color: {

@@ -51,7 +51,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       label: null,
       axis: false,
     },
-    height: 500,
+    height: 700,
     width: 1000,
     margin: 70,
     color: {
