@@ -38,9 +38,34 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
           spacing: 0.2,
         },
       }),
+      Plot.text(countData, {
+        x: d => d.x1 - (d.x1 - d.x0) / 2,
+        y: 'y',
+        text: d => (d.x1 - d.x0) !== 0 ? `${d.x1 - d.x0}` : null,
+        dy: '0.5',
+        font: 'sans-serif',
+        fontSize: 12,
+        fontWeight: "bold",
+        applied: {
+          align: 'center',
+        },
+      }),
+      Plot.text([{ y: "comandante", x: -10, text: "¡No hay mujeres!" }], {
+        x: 60,
+        y: d => d.y,
+        dy: 30,
+        text: d => d.text,
+        font: 'sans-serif',
+        fontSize: 14,
+        fontWeight: 'bold',
+        applied: {
+          align: 'right',
+        },
+      })
     ],
     y: {
       label: null,
+      domain: ["ingeniero aeroespacial", "especialista aeroespacial", "comandante", "piloto"]
     },
     x: {
       label: null,
@@ -54,6 +79,9 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       legend: false,
     },
   });
+  
+  d3.select('#chart').append(() => chart);
+  
 
   d3.select('#chart').append(() => chart);
 });

@@ -20,29 +20,40 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
   Object.entries(countBynacionalidadAndGender).forEach(([nacionalidad, genderCounts]) => {
     let totalCount = countBynacionalidad[nacionalidad];
     let femeninoCount = genderCounts.femenino;
-    countData.push({x: nacionalidad, y0: 0, y1: femeninoCount, gender: 'Femenino'});
-    countData.push({x: nacionalidad, y0: femeninoCount, y1: totalCount, gender: 'Masculino'});
+    countData.push({y: nacionalidad, x0: 0, x1: femeninoCount, gender: 'Femenino'});
+    countData.push({y: nacionalidad, x0: femeninoCount, x1: totalCount, gender: 'Masculino'});
   });
 
   let chart = Plot.plot({
     marks: [
-      Plot.barY(countData, {
-        x: 'x',
-        y: d => d.y1 - d.y0,
-        y0: 'y0',
+      Plot.barX(countData, {
+        y: 'y',
+        x: d => d.x1 - d.x0,
+        x0: 'x0',
         fill: 'gender',
         stroke: 'black',
       }),
+      Plot.text(countData.filter(d => d.gender === 'Masculino'), {
+        x: d => d.x1 + 1,
+        y: d => d.y,
+        text: d => d.x1,
+        textAlign: 'left',
+        fill: '#ffffff',
+        fontSize: 14,
+        fontWeight: 500,
+      }),
     ],
-    x: {
-      label: null,
-    },
     y: {
       label: null,
+      domain: ["EE.UU.", "Rusia", "China", "Japon", "Italia", "Reino Unido", "Alemania", "Canada", "Dinamarca", "Francia", "Paises Bajos", "EAU", "Kazajistan"],
+    },
+    x: {
+      label: null,
+      axis: false,
     },
     height: 500,
     width: 1000,
-    margin: 30,
+    margin: 70,
     color: {
       range: ['#e59892', '#4773aa'],
       legend: false,
@@ -56,5 +67,6 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       window.location.href = url;
     }
   });
+
   d3.select('#chart').append(() => chart);
 });
