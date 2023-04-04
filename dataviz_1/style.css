@@ -7,26 +7,29 @@ body {
 #chart svg {
     color: #dce4ef;
     background-color: #061f4a;
-    align-self: center;
     margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h1 {
     color: #ffffff;
+    text-align: center;
 }
 
 h5 {
   color: #ffffff;
-  align-self: center;
   font-weight: 300;
+  text-align: center;
+  font-style: italic;
 }
 
 p {
   color: #ffffff;
-  align-self: center;
   font-size: 16px;
   font-weight: 300;
   margin-bottom: 30px;
+  text-align: center;
 }
 .gender-legend {
     display: flex;
@@ -34,7 +37,7 @@ p {
     align-items: center;
     justify-content: space-between;
     width: 200px;
-    margin-left: 10px;
+    margin-left: 1050px;
   }
   
   .legend-item {
