@@ -37,4 +37,4 @@
 
 - Volvimos a utilizar el color de la misma manera que en el segundo gráfico, tanto en las barras como sutilmente en el texto, pues al ya haber dado referencias claras en el primer gráfico, el resto de la visualización entendemos que se sobreentiende que esos colores siguen representando lo mismo (para no tener que volver al primer gráfico en caso de olvidarlo lo aclaramos con el color en el texto de la bajada). La idea de las barras apiladas es la misma que en los primeros dos gráficos.
 
-En general, creemos que la elección del tipo de gráfico y las marcas en cada gráfico es acertada para permitir una interpretación rápida de los datos y del mensaje que buscamos dar con nuestras visualizaciones.
+En general, creemos que la elección del tipo de gráfico, marcas y canales en cada uno de ellos es acertada para permitir una interpretación rápida de los datos y del mensaje que buscamos dar con nuestras visualizaciones.
