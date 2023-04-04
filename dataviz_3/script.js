@@ -28,13 +28,13 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       Plot.line(dataPorGenero.get('masculino'), {
         x: 'anio_mision',
         y: 'mision_hs',
-        stroke: 'blue',
+        stroke: '#4773aa',
         curve: d3.curveLinear
       }),
       Plot.line(dataPorGenero.get('femenino'), {
         x: 'anio_mision',
         y: 'mision_hs',
-        stroke: 'pink',
+        stroke: '#e59892',
         curve: d3.curveLinear
       }),
       Plot.text(dataPorGenero.get('masculino'), {
@@ -57,14 +57,14 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
     ],
     x: {
       tickFormat: 'd',
-      label: 'Año de la misión'
+      label: null,
     },
     y: {
       label: '',
       axis: false
     },
     height: 630,
-    width: 800,
+    width: 1000,
     margin: 30,
   });
   d3.select('#chart').append(() => chart);

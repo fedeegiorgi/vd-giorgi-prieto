@@ -53,7 +53,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
     },
     height: 700,
     width: 1000,
-    margin: 70,
+    margin: 62,
     color: {
       range: ['#e59892', '#4773aa'],
       legend: false,
