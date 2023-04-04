@@ -1,253 +1,71 @@
 d3.csv('astronautas.csv', d3.autoType).then(data => {
-  // Agrupar los datos por género y año de misión
-  const dataAgrupadaPorGeneroYAnioDeMision = d3.group(data, d => d.genero, d => d.anio_mision);
-
-  // Calcular el total de horas de misión para cada combinación de género y año de misión
-  const dataTotalesPorGeneroYAnioDeMision = Array.from(dataAgrupadaPorGeneroYAnioDeMision, ([genero, anios]) => ({
-    genero: genero,
-    anios: Array.from(anios, ([anio_mision, misiones]) => ({
-      anio_mision: anio_mision,
-      mision_hs: d3.sum(misiones, d => d.mision_hs)
-    })).sort((a, b) => a.anio_mision - b.anio_mision) // Ordenar por año ascendente
-  }));
-
-  // Crear un gráfico de líneas con los datos agrupados
-  const chart = Plot.plot({
-    marks: [
-      Plot.line(dataTotalesPorGeneroYAnioDeMision.flatMap(d => d.anios.map(v => ({
-        genero: d.genero,
-        anio_mision: v.anio_mision,
-        mision_hs: v.mision_hs
-      }))), {
-        x: 'anio_mision',
-        y: 'mision_hs',
-        stroke: d => d.genero === 'masculino' ? '#4773aa' : '#e59892',
-        curve: d3.curveLinear // Interpolación lineal
-      }),
-      Plot.circle(dataTotalesPorGeneroYAnioDeMision.flatMap(d => d.anios.map(v => ({
-        genero: d.genero,
-        anio_mision: v.anio_mision,
-        mision_hs: v.mision_hs
-      }))), {
-        x: 'anio_mision',
-        y: 'mision_hs',
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: d => d.genero === 'masculino' ? '#4773aa' : '#e59892',
-        r: 4 // radio del círculo
-      })
-    ],
-    x: {
-      tickFormat: 'd',
-      label: null,
-    },
-    y: {
-      label: 'Horas misión totales'
-    },
-    height: 600,
-    width: 1200,
-  });
-  
-  // Agregar el gráfico al DOM
-  d3.select('#chart').append(() => chart);
-})
-.catch(error => {
-  // Manejar cualquier error que pueda ocurrir
-  console.error(error);
-  d3.select('#chart').text('Error al cargar los datos.');
-});
-
-
-
-
-
-/*
-d3.csv('astronautas.csv', d3.autoType).then(data => {
-  // Agrupar los datos por género y año de misión
-  const dataAgrupadaPorGeneroYAnioDeMision = d3.group(data, d => d.genero, d => d.anio_mision);
-
-  // Calcular el total de horas de misión para cada combinación de género y año de misión
-  const dataTotalesPorGeneroYAnioDeMision = Array.from(dataAgrupadaPorGeneroYAnioDeMision, ([genero, anios]) => ({
-    genero: genero,
-    anios: Array.from(anios, ([anio_mision, misiones]) => ({
-      anio_mision: anio_mision,
-      mision_hs: d3.sum(misiones, d => d.mision_hs)
-    }))
-  }));
-
-  // Crear un gráfico de líneas con los datos agrupados
-  const chart = Plot.plot({
-    marks: [
-      Plot.line(dataTotalesPorGeneroYAnioDeMision.flatMap(d => d.anios.map(v => ({
-        genero: d.genero,
-        anio_mision: v.anio_mision,
-        mision_hs: v.mision_hs
-      }))), {
-        x: 'anio_mision',
-        y: 'mision_hs',
-        stroke: d => d.genero === 'masculino' ? 'blue' : 'pink'
-      })
-    ],
-    x: {
-      tickFormat: 'd'
-    },
-    y: {
-      label: 'Horas de misión'
-    }
-  });
-  
-  // Agregar el gráfico al DOM
-  d3.select('#chart').append(() => chart);
-})
-.catch(error => {
-  // Manejar cualquier error que pueda ocurrir
-  console.error(error);
-  d3.select('#chart').text('Error al cargar los datos.');
-});
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-d3.csv('astronautas.csv', d3.autoType).then(data => {
-  let totals = {};
-
-  // Recorremos cada fila de datos y agregamos los valores de mision_hs por genero y anio_mision
-  data.forEach(row => {
-    let key = row.genero + '_' + row.anio_mision;
-    console.log(key, row.mision_hs);
-    if (!totals[key]) {
-      totals[key] = {genero: row.genero, anio_mision: row.anio_mision, mision_hs: row.mision_hs};
-    } else {
-      totals[key].mision_hs += row.mision_hs;
-    }
-  });
-  let chart = Plot.plot({
-    marks: [
-      Plot.line(totals, {
-        x: 'anio_mision',
-        y: 'mision_hs',
-        z: 'genero',
-        stroke: 'genero',
-      }),
-    ],
-    x: {
-      // https://github.com/observablehq/plot#formats
-      tickFormat: 'd',
-    },
-  })
-    // Código para graficar
-  d3.select('#chart').append(() => chart)
-});
-*/
-
-
-
-
-
-
-
-
-
-
-/*
-  const sortedData = data.sort((a,b) => a.anio_mision > b.anio_mision ? 1 : -1)
-  
-  var datos_filtrados = data.map(function(d) {
-    return {
-      genero: d.genero,
-      anio: d.anio_mision,
-      horas: +d.mision_hs // convertir a número
-    };
-  });
-  
-  var datos_agrupados = d3.group(datos_filtrados, d => d.genero, d => d.anio);
-  var resultados = [];
-  datos_agrupados.forEach(function(valor, clave) {
-    var genero = clave[0];
-    var anio = clave[1];
-    var total_horas = d3.sum(valor, function(d) { return d.mision_hs; });
-    resultados.push({genero: genero, anio: anio, horas: total_horas});
-  });
-  
-  console.log(resultados); // mostrar los resultados en la consola
-  */
-/*
-  let countByYearGenderHours = {};
-  data.forEach(function(d) {
-    var year = d.anio_mision;
-    var gender = d.genero;
-    var hours = d.mision_hs;
-    countByYearGenderHours[year] = countByYearGenderHours[year] || {masculino: 0, femenino: 0};
-    countByYearGenderHours[year][gender]+= hours;
-  });
-*/
-
-/*
-d3.csv('astronautas.csv', d3.autoType).then(data => {
-  let country_data = d3.group(data, d => d.anio_mision)
-  let country = []
-  country_data.forEach((value, key) => {
-    let total_mision = 0
-    let total_eva = 0
-    let astronautas = 0
-    value.forEach(d => {
-      total_mision += d.mision_hs
-      total_eva += d.eva_mision_hs
-      astronautas ++
-    })
-    country.push({country: key, totalmision: total_mision, totaleva: total_eva, astronautas: astronautas})
-  })
-
-
-
-
-
-  let dotColor = d => {
-    if (d.country === 'EE.UU.') {
-      return 'red'
-    } else if (d.country === 'U.S.S.R/Rusia') {
-      return 'blue'
-    } else {
-      return 'black'
+  const combinaciones = [];
+  const generos = ['masculino', 'femenino'];
+  const anios = d3.range(d3.min(data, d => d.anio_mision), d3.max(data, d => d.anio_mision) + 1);
+  for (const genero of generos) {
+    for (const anio of anios) {
+      combinaciones.push({
+        genero: genero,
+        anio_mision: anio,
+        mision_hs: 0
+      });
     }
   }
 
-  let chart = Plot.plot({
+  for (const d of data) {
+    const index = combinaciones.findIndex(c => c.genero === d.genero && c.anio_mision === d.anio_mision);
+    combinaciones[index].mision_hs += d.mision_hs;
+  }
+
+  const dataPorGenero = d3.group(combinaciones, d => d.genero);
+
+  for (const [genero, datos] of dataPorGenero) {
+    datos.sort((a, b) => a.anio_mision - b.anio_mision);
+  }
+
+  const chart = Plot.plot({
     marks: [
-      Plot.dot(country, {
-        x: 'totalmision', 
-        y: 'totaleva',
-        stroke: dotColor,
-        z: 'key'
+      Plot.line(dataPorGenero.get('masculino'), {
+        x: 'anio_mision',
+        y: 'mision_hs',
+        stroke: 'blue',
+        curve: d3.curveLinear
       }),
+      Plot.line(dataPorGenero.get('femenino'), {
+        x: 'anio_mision',
+        y: 'mision_hs',
+        stroke: 'pink',
+        curve: d3.curveLinear
+      }),
+      Plot.text(dataPorGenero.get('masculino'), {
+        x: 'anio_mision',
+        y: 'mision_hs',
+        text: d => `${d.mision_hs.toLocaleString('es-ES', {maximumFractionDigits: 0, useGrouping: true})}`, // Agregar una
+        fill: 'white',
+        fontSize: 12,
+        dy: -20
+      }),
+      Plot.text(dataPorGenero.get('femenino'), {
+        x: 'anio_mision',
+        y: 'mision_hs',
+        text: d => `${d.mision_hs.toLocaleString('es-ES', {maximumFractionDigits: 0, useGrouping: true})}`, // Agregar una
+        fill: 'white',
+        fontSize: 12,
+        dy: -20
+
+      })
     ],
     x: {
-      label: 'Horas misión',
+      tickFormat: 'd',
+      label: 'Año de la misión'
     },
     y: {
-      label: 'Horas EVA',
+      label: '',
+      axis: false
     },
-    height: 500,
-    width: 1000,
+    height: 630,
+    width: 800,
     margin: 30,
-  })
-
-  d3.select('#chart').append(() => chart)
+  });
+  d3.select('#chart').append(() => chart);
 })
-*/
