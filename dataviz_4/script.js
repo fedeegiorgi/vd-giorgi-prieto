@@ -50,13 +50,13 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
           align: 'center',
         },
       }),
-      Plot.text([{ y: "comandante", x: -10, text: "¡No hay mujeres!" }], {
-        x: 60,
+      Plot.text([{ y: "comandante", x: -10, text: "¡No hay comandantes ni pilotos mujeres!" }], {
+        x: 62,
         y: d => d.y,
-        dy: 30,
+        dy: 40,
         text: d => d.text,
         font: 'sans-serif',
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: 'bold',
         applied: {
           align: 'right',
@@ -71,8 +71,8 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       label: null,
       ticks: 0,
     },
-    height: 500,
-    width: 800,
+    height: 600,
+    width: 1200,
     margin: 150,
     color: {
       range: ['#e59892', '#4773aa'],

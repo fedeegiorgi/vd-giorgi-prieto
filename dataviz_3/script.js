@@ -39,11 +39,13 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
     ],
     x: {
       tickFormat: 'd',
-      label: 'Año de la misión'
+      label: null,
     },
     y: {
-      label: 'Horas totales de la misión'
+      label: 'Horas misión totales'
     },
+    height: 600,
+    width: 1200,
   });
   
   // Agregar el gráfico al DOM
