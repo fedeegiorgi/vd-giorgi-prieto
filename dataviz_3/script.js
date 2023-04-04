@@ -21,7 +21,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
       }))), {
         x: 'anio_mision',
         y: 'mision_hs',
-        stroke: d => d.genero === 'masculino' ? 'blue' : 'pink',
+        stroke: d => d.genero === 'masculino' ? '#4773aa' : '#e59892',
         curve: d3.curveLinear // Interpolación lineal
       }),
       Plot.circle(dataTotalesPorGeneroYAnioDeMision.flatMap(d => d.anios.map(v => ({
@@ -33,7 +33,7 @@ d3.csv('astronautas.csv', d3.autoType).then(data => {
         y: 'mision_hs',
         stroke: 'black',
         strokeWidth: 1,
-        fill: d => d.genero === 'masculino' ? 'blue' : 'pink',
+        fill: d => d.genero === 'masculino' ? '#4773aa' : '#e59892',
         r: 4 // radio del círculo
       })
     ],
